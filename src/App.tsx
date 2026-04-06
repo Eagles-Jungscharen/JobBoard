@@ -2,11 +2,13 @@ import { FluentProvider, webLightTheme } from '@fluentui/react-components'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { OverviewPage } from './pages/OverviewPage'
 import { DetailPage } from './pages/DetailPage'
+import { AppHeader } from './components/AppHeader'
 
 function App() {
   return (
     <FluentProvider theme={webLightTheme}>
       <BrowserRouter>
+        <AppHeader />
         <Routes>
           <Route path="/" element={<OverviewPage />} />
           <Route path="/jobs/:id" element={<DetailPage />} />

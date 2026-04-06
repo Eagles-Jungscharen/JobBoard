@@ -29,6 +29,9 @@ jobs:
           api_location: ""
         env:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_APP_TITLE: ${{ secrets.VITE_APP_TITLE }}
+          VITE_APP_TEASER: ${{ secrets.VITE_APP_TEASER }}
+          VITE_APP_ICON_URL: ${{ secrets.VITE_APP_ICON_URL }}
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
