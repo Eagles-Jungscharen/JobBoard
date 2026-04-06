@@ -53,6 +53,9 @@ Die App ist danach unter http://localhost:5173 erreichbar.
 | Variable | Beschreibung | Pflicht |
 |---|---|---|
 | `VITE_API_URL` | URL des Jobs-API-Endpoints | Ja |
+| `VITE_APP_TITLE` | Titel im App-Header (Fallback: `Jobs`) | Nein |
+| `VITE_APP_TEASER` | Teaser-Text unterhalb des Titels | Nein |
+| `VITE_APP_ICON_URL` | URL eines Logos (Header-Bild + Browser-Favicon) | Nein |
 
 Für die lokale Entwicklung wird `.env.local` verwendet (wird nicht ins Git eingecheckt).
 Die Vorlage liegt in `.env.example`.
@@ -66,6 +69,9 @@ Die Vorlage liegt in `.env.example`.
 3. Folgende GitHub Secrets setzen:
    - `AZURE_STATIC_WEB_APPS_API_TOKEN` — von Azure SWA-Ressource kopieren
    - `VITE_API_URL` — URL des Jobs-API
+   - `VITE_APP_TITLE` — Titel im App-Header *(optional)*
+   - `VITE_APP_TEASER` — Teaser-Text *(optional)*
+   - `VITE_APP_ICON_URL` — Logo-URL *(optional)*
 
 ### CI/CD
 
@@ -78,6 +84,8 @@ Pull Requests erhalten automatisch eine Vorschau-URL.
 src/
 ├── api/
 │   └── jobsApi.ts        # API-Calls
+├── components/
+│   └── AppHeader.tsx     # Globaler Header (Logo, Titel, Teaser, Favicon)
 ├── pages/
 │   ├── OverviewPage.tsx  # Übersicht aller offenen Stellen
 │   └── DetailPage.tsx    # Detailansicht einer Stelle
