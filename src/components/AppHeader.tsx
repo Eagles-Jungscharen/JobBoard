@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Title1, Caption1, makeStyles, tokens } from '@fluentui/react-components'
 
@@ -30,7 +30,13 @@ const useStyles = makeStyles({
 export function AppHeader() {
   const styles = useStyles()
   const [searchParams] = useSearchParams()
-  const isEmbedded = searchParams.get('embedded') === 'true'
+  const [isEmbedded] = useState(() => {
+    const stored = sessionStorage.getItem('isEmbedded')
+    if (stored !== null) return stored === 'true'
+    const value = searchParams.get('embedded') === 'true'
+    sessionStorage.setItem('isEmbedded', String(value))
+    return value
+  })
 
   const title = import.meta.env.VITE_APP_TITLE as string | undefined
   const teaser = import.meta.env.VITE_APP_TEASER as string | undefined
