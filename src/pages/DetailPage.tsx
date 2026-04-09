@@ -72,7 +72,7 @@ export function DetailPage() {
     return jobs?.find((j) => j.id === id)
   }, [jobs, id])
 
-  const startingAt = useMemo(() => job ? new Date(job.startingAt).toLocaleDateString() : "sofort", [job])
+  const startingAt = useMemo(() => job?.startingAt ? new Date(job.startingAt).toLocaleDateString() : "sofort", [job])
   if (isLoading) return <Spinner label="Dienst wird geladen …" />
 
   if (isError) {
