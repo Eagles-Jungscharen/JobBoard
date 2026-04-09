@@ -1,10 +1,14 @@
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
   Body1Strong,
+  Button,
   Caption1,
   Card,
   CardHeader,
+  Label,
   makeStyles,
+  Select,
   Spinner,
   tokens,
 } from '@fluentui/react-components'
@@ -17,8 +21,17 @@ const useStyles = makeStyles({
     maxWidth: '900px',
     margin: '0 auto',
   },
-  heading: {
-    marginBottom: tokens.spacingVerticalXL,
+  filterBar: {
+    display: 'flex',
+    gap: tokens.spacingHorizontalL,
+    marginBottom: tokens.spacingVerticalL,
+    flexWrap: 'wrap',
+    alignItems: 'flex-end',
+  },
+  filterItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: tokens.spacingVerticalXS,
   },
   grid: {
     display: 'grid',
@@ -36,6 +49,9 @@ const useStyles = makeStyles({
 export function OverviewPage() {
   const styles = useStyles()
   const navigate = useNavigate()
+  const [selectedRessort, setSelectedRessort] = useState('')
+  const [selectedTeam, setSelectedTeam] = useState('')
+
   const { data: jobs, isLoading, isError, error } = useQuery({
     queryKey: ['jobs'],
     queryFn: fetchJobs,
@@ -51,10 +67,68 @@ export function OverviewPage() {
     )
   }
 
+  const uniqueRessorts = [...new Set(jobs?.map((j) => j.ressort) ?? [])]
+  const uniqueTeams = [...new Set(jobs?.map((j) => j.team) ?? [])]
+
+  const filteredJobs = (jobs ?? [])
+    .filter(
+      (j) =>
+        (!selectedRessort || j.ressort === selectedRessort) &&
+        (!selectedTeam || j.team === selectedTeam),
+    )
+    .slice()
+    .sort((a, b) => a.title.localeCompare(b.title, 'de'))
+
   return (
     <div className={styles.root}>
+      {(uniqueRessorts.length > 1 || uniqueTeams.length > 1) && (
+        <div className={styles.filterBar}>
+          {uniqueRessorts.length > 1 && (
+            <div className={styles.filterItem}>
+              <Label htmlFor="filter-ressort">Ressort</Label>
+              <Select
+                id="filter-ressort"
+                value={selectedRessort}
+                onChange={(_, data) => setSelectedRessort(data.value)}
+              >
+                <option value="">Alle Ressorts</option>
+                {uniqueRessorts.map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          )}
+          {uniqueTeams.length > 1 && (
+            <div className={styles.filterItem}>
+              <Label htmlFor="filter-team">Team</Label>
+              <Select
+                id="filter-team"
+                value={selectedTeam}
+                onChange={(_, data) => setSelectedTeam(data.value)}
+              >
+                <option value="">Alle Teams</option>
+                {uniqueTeams.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          )}
+          {(selectedRessort || selectedTeam) && (
+            <div className={styles.filterItem}>
+              <Label>&nbsp;</Label>
+              <Button appearance="subtle" onClick={() => { setSelectedRessort(''); setSelectedTeam('') }}>
+                Filter zurücksetzen
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
       <div className={styles.grid}>
-        {jobs?.map((job) => (
+        {filteredJobs.map((job) => (
           <Card
             key={job.id}
             className={styles.card}
