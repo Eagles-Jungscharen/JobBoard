@@ -7,4 +7,5 @@ export interface Job {
   teamLeader: string;
   jobDescription: string;
   expectation: string;
+  startingAt:string;
 }

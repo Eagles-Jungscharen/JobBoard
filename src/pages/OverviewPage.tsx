@@ -6,7 +6,6 @@ import {
   CardHeader,
   makeStyles,
   Spinner,
-  Title1,
   tokens,
 } from '@fluentui/react-components'
 import { useNavigate } from 'react-router-dom'
@@ -54,7 +53,6 @@ export function OverviewPage() {
 
   return (
     <div className={styles.root}>
-      <Title1 className={styles.heading}>Offene Stellen</Title1>
       <div className={styles.grid}>
         {jobs?.map((job) => (
           <Card

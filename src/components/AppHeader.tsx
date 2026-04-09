@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Title1, Caption1, makeStyles, tokens } from '@fluentui/react-components'
 
 const useStyles = makeStyles({
   header: {
     display: 'flex',
+    justifyContent:'center',
     alignItems: 'center',
     gap: tokens.spacingHorizontalM,
     padding: `${tokens.spacingVerticalL} ${tokens.spacingHorizontalXL}`,
@@ -13,8 +15,8 @@ const useStyles = makeStyles({
     borderBottomColor: tokens.colorNeutralStroke2,
   },
   icon: {
-    width: '48px',
-    height: '48px',
+    width: '160px',
+    height: '160px',
     objectFit: 'contain',
     flexShrink: 0,
   },
@@ -27,10 +29,16 @@ const useStyles = makeStyles({
 
 export function AppHeader() {
   const styles = useStyles()
+  const [searchParams] = useSearchParams()
+  const isEmbedded = searchParams.get('embedded') === 'true'
 
   const title = import.meta.env.VITE_APP_TITLE as string | undefined
   const teaser = import.meta.env.VITE_APP_TEASER as string | undefined
   const iconUrl = import.meta.env.VITE_APP_ICON_URL as string | undefined
+
+  useEffect(() => {
+    document.title = title ?? 'Offene Dienste'
+  }, [title])
 
   useEffect(() => {
     if (!iconUrl) return
@@ -43,13 +51,15 @@ export function AppHeader() {
     link.href = iconUrl
   }, [iconUrl])
 
+  if (isEmbedded) return null
+
   return (
     <header className={styles.header}>
       {iconUrl && (
         <img src={iconUrl} alt="" className={styles.icon} />
       )}
       <div className={styles.textGroup}>
-        <Title1>{title ?? 'Jobs'}</Title1>
+        <Title1>{title ?? 'Dienstübersicht'}</Title1>
         {teaser && <Caption1>{teaser}</Caption1>}
       </div>
     </header>
