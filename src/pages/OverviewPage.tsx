@@ -57,7 +57,7 @@ export function OverviewPage() {
     queryFn: fetchJobs,
   })
 
-  if (isLoading) return <Spinner label="Stellen werden geladen …" />
+  if (isLoading) return <Spinner label="Dienste werden geladen …" />
 
   if (isError) {
     return (

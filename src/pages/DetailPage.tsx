@@ -73,7 +73,7 @@ export function DetailPage() {
   }, [jobs, id])
 
   const startingAt = useMemo(() => job ? new Date(job.startingAt).toLocaleDateString() : "sofort", [job])
-  if (isLoading) return <Spinner label="Stelle wird geladen …" />
+  if (isLoading) return <Spinner label="Dienst wird geladen …" />
 
   if (isError) {
     return (
@@ -85,7 +85,7 @@ export function DetailPage() {
 
   
   if (!job) {
-    return <p className={styles.error}>Stelle nicht gefunden.</p>
+    return <p className={styles.error}>Dienst nicht gefunden.</p>
   }
 
   return (
